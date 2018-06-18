@@ -1,0 +1,36 @@
+<div class="table-responsive container">
+  <nz-table
+    #basicTable
+    [nzData]="plans"
+    [nzLoading]="isLoading"
+    nzShowPagination = "false"
+  >
+    <thead>
+    <tr>
+      <th>编号</th>
+      <th>计划名称</th>
+      <th>作者</th>
+      <th>人数</th>
+      <th *ngIf="check()">注册</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data; let ind = index;">
+        <td>{{ ind+1 }}</td>
+        <td><a [routerLink]="['/show', data.id]">{{data.name}}</a></td>
+        <td>{{data.author}}</td>
+        <td>{{data.people | nullToZerro }}</td>
+        <td *ngIf="check()">
+          <span *ngIf="reg(data.id)">
+            已注册
+          </span>
+          <span *ngIf="!reg(data.id)">
+            <nz-popconfirm [nzTitle]="'确认注册？'" (nzOnConfirm)="confirm(data.id)">
+              <a nz-popconfirm>注册</a>
+            </nz-popconfirm>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

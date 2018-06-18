@@ -1,0 +1,68 @@
+<div class="con">
+  <nz-table
+    #nzTable
+    nzBordered="true"
+    [nzData]="persons"
+    nzShowPagination="false"
+    nzSize="small"
+    [nzWidthConfig]="widths"
+    [nzScroll]="scrolls"
+    [nzLoading]="isLoading"
+  >
+    <thead>
+      <tr style="height: 60px;">
+        <th colspan="3" nzLeft="0px" style="width: 360px;">
+          {{ content.content_name }}
+          <button nz-button="primary" (click)="showInfo()">统计信息</button>
+          <ng-template #tplContent>
+            <div>人数： {{ temp_person.length }}</div>
+            <nz-table #basicTable [nzData]="temp_person">
+              <thead>
+              <tr>
+                <th>排名</th>
+                <th>信息</th>
+                <th>姓名</th>
+                <th>学号</th>
+                <th>题数</th>
+                <th>进度</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of basicTable.data; let ind = index;">
+                <td>{{ ind + 1 }}</td>
+                <td>{{ data.person_des}}</td>
+                <td>{{ data.person_name}}</td>
+                <td>{{ data.id }}</td>
+                <td>{{ data.peron_complete }}/{{ data.peron_count }}</td>
+                <td>{{ data.peron_complete/data.peron_count*100 | number:'.0-0' }}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </ng-template>
+        </th>
+        <th rowspan="2" *ngFor="let person of persons">
+          {{ person.person_name }} <br/>
+          {{ person.peron_complete }}题/{{ person.peron_count }}题<br/>
+          <nz-progress [nzPercent]="person.peron_complete/person.peron_count*100 | number:'.0-0'" nzStatus="active" nzSize="small"></nz-progress>
+        </th>
+      </tr>
+      <tr style="height: 40px;">
+        <th nzLeft="0px">专项</th>
+        <th nzLeft="120px">专题</th>
+        <th nzLeft="240px">题目</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let topic of content.topics; let ind = index;" style="height: 38px;">
+      <td nzLeft="0px" *ngIf="checkSp(ind)" [attr.rowspan]="topic.subject.special.special_col">{{ topic.subject.special.special_name }}({{ topic.subject.special.special_col }})</td>
+      <td nzLeft="120px" *ngIf="checkSu(ind)" [attr.rowspan]="topic.subject.subject_col">{{ topic.subject.subject_name }}({{ topic.subject.subject_col }})</td>
+      <td nzLeft="240px"><a [href]="topic.link" target="_blank">{{ topic.topic_name }}</a></td>
+      <td *ngFor="let person of persons; let i = index;">
+        <span *ngIf="checkAc(topic.topic_name, i)" class="solved">
+          {{ showAcTime(topic.topic_name, i) }}
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

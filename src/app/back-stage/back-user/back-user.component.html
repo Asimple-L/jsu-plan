@@ -1,0 +1,104 @@
+<div class="table-responsive container">
+  <div>
+    <button nz-button [nzType]="'primary'" (click)="showModal()">
+      <span>创建用户</span>
+    </button>
+    <nz-modal
+      [(nzVisible)]="isVisible"
+      nzTitle="创建用户"
+      (nzOnCancel)="init()"
+      (nzOnOk)="handleOk()"
+      [nzOkLoading]="isOkLoading"
+      nzOkText="确认创建"
+    >
+      <div class="mb16">
+        <nz-input-group nzAddOnBefore="学号">
+          <input type="text" nz-input [(ngModel)]="addUser.sno" (blur)="check()">
+        </nz-input-group>
+      </div>
+      <div class="mb16">
+        <nz-input-group nzAddOnBefore="姓名">
+          <input type="text" nz-input [(ngModel)]="addUser.sname">
+        </nz-input-group>
+      </div>
+    </nz-modal>
+  </div>
+
+  <nz-table
+    #basicTable
+    [nzData]="user"
+    [nzShowPagination]="false"
+    [nzLoading]="loading"
+  >
+    <thead>
+    <tr>
+      <th>编号</th>
+      <th>学号</th>
+      <th>姓名</th>
+      <th>年级</th>
+      <th>vj账号名称</th>
+      <th>设置管理员</th>
+      <th>删除</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let plan of basicTable.data; let ind = index">
+      <td>{{ ind+1 }}</td>
+      <td>{{ plan.sno }}</td>
+      <td>
+        <div class="editable-cell">
+          <div class="editable-cell-text-wrapper">
+            <ng-container *ngIf="!editCache[plan.sno].editName">
+              {{ plan.sname }}
+              <i class="anticon anticon-edit editable-cell-icon" (click)="startEdit(plan.sno, 'name')"></i>
+            </ng-container>
+            <ng-container *ngIf="editCache[plan.sno].editName">
+              <input style="width: 90%;" type="text" nz-input [(ngModel)]="editCache[plan.sno].name">
+              <i class="anticon anticon-check editable-cell-icon-check" (click)="finishEdit(plan.sno, 'name')"></i>
+              <i class="anticon anticon-close editable-cell-icon-close" (click)="CanceEdit(plan.sno, 'name')"></i>
+            </ng-container>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="editable-cell">
+          <div class="editable-cell-text-wrapper">
+            <ng-container *ngIf="!editCache[plan.sno].editSgrade">
+              {{ plan.sgrade | showzw }}
+              <i class="anticon anticon-edit editable-cell-icon" (click)="startEdit(plan.sno, 'sgrade')"></i>
+            </ng-container>
+            <ng-container *ngIf="editCache[plan.sno].editSgrade">
+              <input style="width: 90%;" type="text" nz-input [(ngModel)]="editCache[plan.sno].sgrade">
+              <i class="anticon anticon-check editable-cell-icon-check" (click)="finishEdit(plan.sno, 'sgrade')"></i>
+              <i class="anticon anticon-close editable-cell-icon-close" (click)="CanceEdit(plan.sno, 'sgrade')"></i>
+            </ng-container>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="editable-cell">
+          <div class="editable-cell-text-wrapper">
+            <ng-container *ngIf="!editCache[plan.sno].editVjname">
+              {{ plan.vjname | showzw }}
+              <i class="anticon anticon-edit editable-cell-icon" (click)="startEdit(plan.sno, 'vjname')"></i>
+            </ng-container>
+            <ng-container *ngIf="editCache[plan.sno].editVjname">
+              <input style="width: 90%;" type="text" nz-input [(ngModel)]="editCache[plan.sno].vjname">
+              <i class="anticon anticon-check editable-cell-icon-check" (click)="finishEdit(plan.sno, 'vjname')"></i>
+              <i class="anticon anticon-close editable-cell-icon-close" (click)="CanceEdit(plan.sno, 'vjname')"></i>
+            </ng-container>
+          </div>
+        </div>
+      </td>
+      <td>
+        <nz-switch [nzDisabled]="canClick(plan.sno)" [(ngModel)]="editCache[plan.sno].status" (click)="clickSwitch(plan.sno)" nzCheckedChildren="是" nzUnCheckedChildren="否"></nz-switch>
+      </td>
+      <td>
+        <nz-popconfirm [nzTitle]="'确认删除用户？'" (nzOnConfirm)="confirm(plan.sno)">
+          <a nz-popconfirm>删除</a>
+        </nz-popconfirm>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

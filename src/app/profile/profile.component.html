@@ -1,0 +1,44 @@
+<div class="table-responsive container">
+  <nz-tabset nzSize="large">
+    <nz-tab nzTitle='个人信息'>
+      <div class="mb16">
+        <span style="max-width: 20%">用户姓名：</span>
+        <nz-input-group>
+          <input type="text" style="max-width: 40%;" nz-input placeholder="姓名" [(ngModel)]="user.sname">
+        </nz-input-group>
+      </div>
+      <div class="mb16">
+        <span style="max-width: 20%">VJ名称：</span>
+        <nz-input-group>
+          <input type="text" style="max-width: 40%;" nz-input placeholder="Vj名" [(ngModel)]="user.vjname">
+        </nz-input-group>
+      </div>
+      <div class="mb16">
+        <button nz-button nzType="primary" (click)="submit()">确认修改</button>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle='修改密码'>
+      <div class="mb16">
+        <span style="max-width: 20%">原密码：</span>
+        <nz-input-group>
+          <input type="password" style="max-width: 40%;" nz-input placeholder="输入原密码" [(ngModel)]="oldpassword">
+        </nz-input-group>
+      </div>
+      <div class="mb16">
+        <span style="max-width: 20%">输入新密码：</span>
+        <nz-input-group>
+          <input type="password" style="max-width: 40%;" nz-input placeholder="输入新密码" [(ngModel)]="newpassword">
+        </nz-input-group>
+      </div>
+      <div class="mb16">
+        <span style="max-width: 20%">重复新密码：</span>
+        <nz-input-group>
+          <input type="password" style="max-width: 40%;" nz-input placeholder="重复新密码" [(ngModel)]="repassword" (blur)="checkPwd()">
+        </nz-input-group>
+      </div>
+      <div class="mb16">
+        <button nz-button nzType="primary" (click)="repwd()">确认修改</button>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+</div>

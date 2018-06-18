@@ -1,0 +1,36 @@
+tr{
+  th {
+    text-align: center;
+    background: #fafafa !important;
+    border: 1px solid #ddd;
+  }
+  td {
+    text-align: center;
+  }
+}
+.con {
+  .solved {
+    background-color: #dff0d8;
+    border: 1px solid #ddd;
+  }
+  .attempted {
+    background-color: #f2dede;
+    border: 1px solid #ddd;
+  }
+}
+:host ::ng-deep .ant-back-top {
+  bottom: 50px;
+}
+:host ::ng-deep .ant-back-top-inner {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  border-radius: 50px;
+  background-color: #1088e9;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+}
+:host ::ng-deep strong {
+  color: #1088e9;
+}

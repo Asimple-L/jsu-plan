@@ -1,0 +1,63 @@
+<div class="table-responsive container">
+  <div>
+    <button nz-button [nzType]="'primary'" (click)="showModal()">
+      <span>创建专项</span>
+    </button>
+    <nz-modal
+      [(nzVisible)]="isVisible"
+      nzTitle="创建专项"
+      (nzOnCancel)="handleCancel()"
+      (nzOnOk)="handleOk()"
+      [nzOkLoading]="isOkLoading"
+      nzOkText="确认创建"
+    >
+      <div class="mb16">
+        <nz-input-group nzAddOnBefore="专项名称">
+          <input type="text" nz-input [(ngModel)]="title">
+        </nz-input-group>
+      </div>
+    </nz-modal>
+  </div>
+
+  <nz-table
+    #basicTable
+    [nzData]="specials"
+    [nzShowPagination]="false"
+    [nzLoading]="loading"
+  >
+    <thead>
+    <tr>
+      <th>编号</th>
+      <th>专项名称</th>
+      <th>详细信息</th>
+      <th>删除</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of basicTable.data; let ind = index;">
+      <td>{{ ind + 1 }}</td>
+      <td>
+        <div class="editable-cell">
+          <div class="editable-cell-text-wrapper">
+            <ng-container *ngIf="!editCache[data.id].edit">
+              {{ data.special_name }}
+              <i class="anticon anticon-edit editable-cell-icon" (click)="startEdit(data.id)"></i>
+            </ng-container>
+            <ng-container *ngIf="editCache[data.id].edit">
+              <input style="width: 90%;" type="text" nz-input [(ngModel)]="editCache[data.id].name">
+              <i class="anticon anticon-check editable-cell-icon-check" (click)="finishEdit(data.id, editCache[data.id].name)"></i>
+              <i class="anticon anticon-close editable-cell-icon-close" (click)="CanceEdit(data.id)"></i>
+            </ng-container>
+          </div>
+        </div>
+      </td>
+      <td><a [routerLink]="['/third', data.id]" title="查看详情">查看详情</a></td>
+      <td>
+        <nz-popconfirm [nzTitle]="'确认删除计划？'" (nzOnConfirm)="confirm(data.id)">
+          <a nz-popconfirm>删除</a>
+        </nz-popconfirm>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

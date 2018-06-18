@@ -1,0 +1,63 @@
+<nz-affix>
+  <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" [routerLink]="['/']">
+      创新创业工作室
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/']">动态</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/contests']">近期比赛</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav my-2 my-lg-0">
+        <li class="nav-item" *ngIf="haveUser()">
+          <nz-dropdown [nzPlacement]="'bottomRight'">
+            <a nz-dropdown class="nav-link">
+              {{ user.sname }}<i class="anticon anticon-down"></i>
+            </a>
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item>
+                <a [routerLink]="['/profile']">个人中心</a>
+              </li>
+              <li nz-menu-item *ngIf="user.status == 1">
+                <a [routerLink]="['/adminBack']">后台管理</a>
+              </li>
+              <li nz-menu-item>
+                <a (click)="loginOut()">
+                  <i class="anticon anticon-logout"></i>
+                  &nbsp;&nbsp;退出登录
+                </a>
+              </li>
+            </ul>
+          </nz-dropdown>
+        </li>
+        <li class="nav-item" *ngIf="!haveUser()">
+          <a class="nav-link" (click)="showModal()">登录</a>
+          <nz-modal [(nzVisible)]="isVisible" nzTitle="用户登录" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
+            <nz-input-group [nzSuffix]="suffixTemplate" nzPrefixIcon="anticon anticon-user">
+              <input type="text" nz-input placeholder="输入用户名" [(ngModel)]="username" (blur)="checkUsername()">
+            </nz-input-group>
+            <ng-template #suffixTemplate><i class="anticon anticon-close-circle" (click)="username=null" *ngIf="username"></i></ng-template>
+            <br/>
+            <br/>
+            <nz-input-group nzPrefixIcon="anticon anticon-lock">
+              <input type="password" nz-input [(ngModel)]="password" placeholder="输入密码">
+            </nz-input-group>
+          </nz-modal>
+
+        </li>
+        <li class="nav-item" *ngIf="!haveUser()">
+          <a class="nav-link" (click)="register()">注册</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</nz-affix>

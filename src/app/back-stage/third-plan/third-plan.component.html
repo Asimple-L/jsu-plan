@@ -1,0 +1,96 @@
+<div class="table-responsive container">
+  <div>
+    <button nz-button [nzType]="'primary'" (click)="showModal()">
+      <span>创建专题集</span>
+    </button>
+    <nz-modal
+      [nzStyle]="{ top: '20px'}"
+      nzWidth="60%"
+      [(nzVisible)]="isVisible"
+      nzTitle="创建专题集"
+      (nzOnCancel)="handleCancel()"
+      (nzOnOk)="handleOk()"
+      [nzOkLoading]="isOkLoading"
+      nzOkText="确认创建"
+    >
+      <div class="mb16">
+        <nz-input-group nzAddOnBefore="题集名称" [nzSize]="'large'">
+          <input type="text" nz-input [(ngModel)]="title">
+        </nz-input-group>
+      </div>
+      <div class="mb16">
+        <nz-input-group [nzSize]="'large'" nzAddOnBefore="开始时间">
+          <input #inputElement nz-input placeholder="eg: 2016-12-31 23:59:59" [ngModel]="time" (ngModelChange)="onChange($event)" >
+        </nz-input-group>
+      </div>
+      <div class="mb16">
+        <nz-input-group [nzSize]="'large'" nzAddOnBefore="时长">
+          <input #inputElementLength nz-input laceholder="eg: 48:00:00" [ngModel]="length" (ngModelChange)="onChangeLength($event)" >
+        </nz-input-group>
+      </div>
+      <nz-divider nzText="选择题目"></nz-divider>
+      <nz-table
+        #editRowTable
+        nzBordered
+        [nzData]="problems"
+        nzSize="small"
+        [nzShowPagination]="false"
+      >
+        <thead>
+          <tr>
+            <th style="width: 100px">
+              <button nz-button (click)="addRow()" class="editable-add-btn">添加题目</button>
+            </th>
+            <th>OJ</th>
+            <th>题目编号</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of problems; let ind = index;">
+          <td>
+            <button nz-button (click)="delRow(ind)" class="editable-add-btn">删除题目</button>
+          </td>
+          <td>
+            <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="data.oj">
+              <nz-option *ngFor="let o of ojList" [nzValue]="o" [nzLabel]="o"></nz-option>
+            </nz-select>
+          </td>
+          <td>
+            <input nz-input placeholder="题号" [(ngModel)]="data.number">
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nz-modal>
+  </div>
+
+  <nz-table
+    #basicTable
+    [nzData]="zt"
+    [nzShowPagination]="false"
+    [nzLoading]="loading"
+  >
+    <thead>
+    <tr>
+      <th>编号</th>
+      <th>专题名称</th>
+      <th>修改专题</th>
+      <th>删除</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let plan of basicTable.data; let ind = index">
+      <td>{{ ind+1 }}</td>
+      <td><a [href]="plan.id | content" target="_blank">{{plan.title}}</a></td>
+      <td>
+        <a (click)="showInfo(plan.id)">修改</a>
+      </td>
+      <td>
+        <nz-popconfirm [nzTitle]="'确认删除计划？'" (nzOnConfirm)="confirm(plan.id)">
+          <a nz-popconfirm>删除</a>
+        </nz-popconfirm>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

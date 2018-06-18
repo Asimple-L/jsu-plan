@@ -1,0 +1,30 @@
+<div>
+  <h1 align="center" onselectstart="return false;" style="cursor: pointer;">
+    各大OJ近期比赛汇总
+  </h1>
+  <div class="table-responsive center">
+    <table align="center" class="table table-striped table-hover table-condensed table-bordered">
+      <thead>
+      <tr>
+        <th>OJ</th>
+        <th>比赛名称</th>
+        <th>开始时间</th>
+        <th>星期</th>
+        <th>访问权限</th>
+        <th>倒计时</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let contest of contests">
+        <td> {{ contest.oj}}</td>
+        <td><a [href]="contest.link" target="_blank">{{ contest.name }}</a></td>
+        <td>{{ contest.start_time }}</td>
+        <td>{{ contest.week | week }}</td>
+        <td>{{ contest.access }}</td>
+        <td>{{ contest.start_time | countDown }}</td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
