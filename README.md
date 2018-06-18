@@ -11,4 +11,8 @@
 
 ## 模块说明
 
-
+*    首页          `index.component`            路径  `/src/app/index`
+*    导航栏        `navigation.component`       路径  `/src/app/navigation`
+*    最近比赛      `recentcontests.component`   路径  `/src/app/recentcontests`
+*    刷题统计      `show.component`             路径  `/src/app/show`
+*    
