@@ -1,6 +1,6 @@
 # JsuPlan
 
-基于Angular4+Zorro的ACM计划进展展示的前端页面，针对每个计划，统计其注册的所有人的刷题情况。
+基于Angular4+Zorro的ACM计划进展展示的前端页面。项目目的在于实现ACM训练的在线自动管理，管理可以利用本系统创建题集，训练生登录账号注册题集，系统通过对题集的实时监测不断更新统计题集的刷题进度信息。
 
 ## 运行方法
 
@@ -15,4 +15,7 @@
 *    导航栏        `navigation.component`       路径  `/src/app/navigation`
 *    最近比赛      `recentcontests.component`   路径  `/src/app/recentcontests`
 *    刷题统计      `show.component`             路径  `/src/app/show`
-*    
+*    后台管理      `back-stage.component`       路径  `/src/app/back-stage`
+*    专项管理      `second-plan.component`      路径  `/src/app/back-stage/second-plan`
+*    专题管理      `third-plan.component`       路径  `/src/app/back-stage/third-plan`
+*    用户管理       `back-user.component`       路径  `/src/app/back-stage/back-user`
