@@ -1,0 +1,51 @@
+<div class="table-responsive container">
+  <div class="mb16">
+    <button nz-button [nzType]="'primary'" (click)="showModal()">
+      <span>添加用户至当前组</span>
+    </button>
+    <nz-modal
+      [(nzVisible)]="isVisible"
+      nzTitle="添加用户"
+      (nzOnCancel)="handleCancel()"
+      (nzOnOk)="handleOk()"
+      [nzOkLoading]="isOkLoading"
+      nzOkText="确认添加"
+    >
+      <div class="mb16">
+        <nz-select style="width: 100%" nzMode="multiple" nzPlaceHolder="选择用户学号" [(ngModel)]="listOfSelectedValue">
+          <nz-option *ngFor="let option of notGroupUser" [nzValue]="option.sno" [nzLabel]="option.sno"></nz-option>
+        </nz-select>
+      </div>
+    </nz-modal>
+  </div>
+
+  <nz-table
+    #basicTable
+    [nzData]="users"
+    [nzShowPagination]="false"
+    [nzLoading]="loading"
+  >
+    <thead>
+    <tr>
+      <th>编号</th>
+      <th>学号</th>
+      <th>姓名</th>
+      <th>VJname</th>
+      <th>删除</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let usr of basicTable.data; let ind = index">
+      <td>{{ ind+1 }}</td>
+      <td>{{usr.sno }}</td>
+      <td> {{ usr.sname }}</td>
+      <td>{{ usr.vjname }}</td>
+      <td>
+        <nz-popconfirm [nzTitle]="'确认删除用户组？'" (nzOnConfirm)="confirm(usr.sno)">
+          <a nz-popconfirm>删除</a>
+        </nz-popconfirm>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

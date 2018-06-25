@@ -19,3 +19,6 @@
 *    专项管理      `second-plan.component`      路径  `/src/app/back-stage/second-plan`
 *    专题管理      `third-plan.component`       路径  `/src/app/back-stage/third-plan`
 *    用户管理       `back-user.component`       路径  `/src/app/back-stage/back-user`
+*    用户组管理     `user-group.component`      路径  `/src/app/back-stage/user-group`
+*    用户组用户管理 `group-user.component`      路径  `/src/app/back-stage/group-user`
+*    用户组计划管理 `group-plan.component`      路径  `/src/app/back-stage/group-plan`

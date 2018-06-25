@@ -1,0 +1,49 @@
+<div class="table-responsive container">
+  <div class="mb16">
+    <button nz-button [nzType]="'primary'" (click)="showModal()">
+      <span>注册计划</span>
+    </button>
+    <nz-modal
+      [(nzVisible)]="isVisible"
+      nzTitle="注册计划"
+      (nzOnCancel)="handleCancel()"
+      (nzOnOk)="handleOk()"
+      [nzOkLoading]="isOkLoading"
+      nzOkText="确认注册"
+    >
+      <div class="mb16">
+        <nz-select style="width: 100%" nzMode="multiple" nzPlaceHolder="选择计划" [(ngModel)]="listOfSelectedValue">
+          <nz-option *ngFor="let option of unPlans" [nzValue]="option.id" [nzLabel]="option.name"></nz-option>
+        </nz-select>
+      </div>
+    </nz-modal>
+  </div>
+
+  <nz-table
+    #basicTable
+    [nzData]="plans"
+    [nzShowPagination]="false"
+    [nzLoading]="loading"
+  >
+    <thead>
+    <tr>
+      <th>编号</th>
+      <th>计划名称</th>
+      <th>计划作者</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let usr of basicTable.data; let ind = index">
+      <td>{{ ind+1 }}</td>
+      <td>{{usr.name }}</td>
+      <td>{{ usr.author }}</td>
+      <td>
+        <nz-popconfirm [nzTitle]="'确认取消注册计划？'" (nzOnConfirm)="confirm(usr.id)">
+          <a nz-popconfirm>取消注册</a>
+        </nz-popconfirm>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

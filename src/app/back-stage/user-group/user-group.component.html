@@ -1,0 +1,68 @@
+<div class="table-responsive container">
+  <div class="mb16">
+    <button nz-button [nzType]="'primary'" (click)="showModal()">
+      <span>创建用户组</span>
+    </button>
+    <nz-modal
+      [(nzVisible)]="isVisible"
+      nzTitle="创建用户组"
+      (nzOnCancel)="handleCancel()"
+      (nzOnOk)="handleOk()"
+      [nzOkLoading]="isOkLoading"
+      nzOkText="确认创建"
+    >
+      <div class="mb16">
+        <nz-input-group nzAddOnBefore="用户组名称">
+          <input type="text" nz-input [(ngModel)]="title" placeholder="集训队">
+        </nz-input-group>
+      </div>
+    </nz-modal>
+  </div>
+
+  <nz-table
+    #basicTable
+    [nzData]="userGroups"
+    [nzShowPagination]="false"
+    [nzLoading]="loading"
+  >
+    <thead>
+    <tr>
+      <th>编号</th>
+      <th>用户组</th>
+      <th>用户</th>
+      <th>管理注册计划</th>
+      <th>删除</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let usr of basicTable.data; let ind = index">
+      <td>{{ ind+1 }}</td>
+      <td>
+        <div class="editable-cell">
+          <div class="editable-cell-text-wrapper">
+            <ng-container *ngIf="!editCache[usr.id].edit">
+              {{usr.name}}
+              <i class="anticon anticon-edit editable-cell-icon" (click)="startEdit(usr.id)"></i>
+            </ng-container>
+            <ng-container *ngIf="editCache[usr.id].edit">
+              <input style="width: 90%;" type="text" nz-input [(ngModel)]="editCache[usr.id].name">
+              <i class="anticon anticon-check editable-cell-icon-check" (click)="finishEdit(usr.id, editCache[usr.id].name)"></i>
+              <i class="anticon anticon-close editable-cell-icon-close" (click)="CanceEdit(usr.id)"></i>
+            </ng-container>
+          </div>
+        </div>
+      </td>
+      <td><a [routerLink]="['/group_user', usr.id]" style="color: #108ee9;" title="点击管理用户组">{{ usr.number }}</a>
+      </td>
+      <td>
+        <a [routerLink]="['/group_plan', usr.id]">管理注册计划</a>
+      </td>
+      <td>
+        <nz-popconfirm [nzTitle]="'确认删除用户组？'" (nzOnConfirm)="confirm(usr.id)">
+          <a nz-popconfirm>删除</a>
+        </nz-popconfirm>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

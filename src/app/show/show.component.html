@@ -6,7 +6,7 @@
   [nzCancelText]="null"
   (nzOnOk)="hidden()"
   >
-    <div>人数： {{ temp_person.length }}</div>
+    <div>人数： {{ temp_person?.length }}</div>
     <nz-table #basicTable [nzData]="temp_person">
       <thead>
       <tr>

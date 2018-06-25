@@ -99,7 +99,6 @@ export class ShowComponent implements OnInit, AfterContentChecked {
   // 获取计划下所有用户的信息
   get_person(key: string): void {
     this.persons = this.plansViewService.getPersonInfo(+this.id);
-    this.temp_person = this.persons;
     this.isLoading = true;
     this.dataSource2 = this.http.get('/search/pstatus', { params: {'planid': this.id, 'gid': key}});
     this.dataSource2.subscribe( ( data ) => {
