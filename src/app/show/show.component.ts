@@ -1,16 +1,18 @@
-import {AfterViewChecked, Component, OnInit, TemplateRef} from '@angular/core';
+import {AfterContentChecked, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Content, Person, PlansViewService, Topic} from '../service/plans-view.service';
+import {Content, Person, PlansViewService} from '../service/plans-view.service';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {NzModalService} from 'ng-zorro-antd';
+import {IntermediatorService} from '../service/intermediator.service';
 
 @Component({
   selector: 'app-show',
   templateUrl: './show.component.html',
   styleUrls: ['./show.component.scss']
 })
-export class ShowComponent implements OnInit, AfterViewChecked {
+export class ShowComponent implements OnInit, AfterContentChecked {
+
   /*  修改请重构  */
   public id: string;
   data = [];
@@ -28,23 +30,36 @@ export class ShowComponent implements OnInit, AfterViewChecked {
   content_flag: boolean;
   person_flag: boolean;
 
+  isShowInfo = false;
+  gid: string;
+
   constructor(
     private router: ActivatedRoute,
     private plansViewService: PlansViewService,
     private http: HttpClient,
     private modalService: NzModalService,
+    private inte: IntermediatorService,
   ) {
     this.id = this.router.snapshot.params['planId'];
   }
 
   ngOnInit() {
     this.get_content();
-    this.get_person();
+    this.get_person('');
     this.init();
+    this.inte.changeEmtter.subscribe( data => {
+      if ( data == true ) {
+        this.isShowInfo = true;
+      }
+    });
+    this.inte.selectEmitter.subscribe( data => {
+      this.gid = data.toString();
+      this.get_person(this.gid);
+    });
   }
 
   // 动态显示x、y滑轮的位置
-  ngAfterViewChecked() {
+  ngAfterContentChecked(): void {
     const temp = window.innerHeight - 170 ;
     this.scrolls = {x: this.singleWidth * this.persons.length + 360 + 'px', y: temp + 'px'};
   }
@@ -82,9 +97,11 @@ export class ShowComponent implements OnInit, AfterViewChecked {
   }
 
   // 获取计划下所有用户的信息
-  get_person(): void {
+  get_person(key: string): void {
     this.persons = this.plansViewService.getPersonInfo(+this.id);
-    this.dataSource2 = this.http.get('/search/pstatus', { params: {'planid': this.id }});
+    this.temp_person = this.persons;
+    this.isLoading = true;
+    this.dataSource2 = this.http.get('/search/pstatus', { params: {'planid': this.id, 'gid': key}});
     this.dataSource2.subscribe( ( data ) => {
       this.persons = data;
       this.temp_person = data;
@@ -106,7 +123,6 @@ export class ShowComponent implements OnInit, AfterViewChecked {
     this.dataSource1 = this.http.get('/search/getall', { params: {'planid': this.id}});
     this.dataSource1.subscribe( ( datas ) => {
       this.content = datas;
-      console.log(this.content);
       this.singleWidth = Math.floor( (2072 - 360 ) / this.persons.length );
       for (const t of this.content.topics ) { this.widths.push(this.singleWidth + 'px'); }
       const temp = window.innerHeight - 170 ;
@@ -138,12 +154,9 @@ export class ShowComponent implements OnInit, AfterViewChecked {
     return '';
   }
 
-  // 显示统计信息弹窗
-  showInfo( tplContent: TemplateRef<{}>): void {
-    const modal = this.modalService.success({
-      nzTitle: '统计信息',
-      nzContent: tplContent
-    });
+  // 隐藏统计信息
+  hidden(): void {
+    this.isShowInfo = false;
   }
 
 }

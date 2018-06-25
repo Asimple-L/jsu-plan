@@ -27,6 +27,11 @@ import { NullToZerroPipe } from './pipe/null-to-zerro.pipe';
 import {AdminUserLoginGuard} from './guard/admin-user-login.guard';
 import { ShowzwPipe } from './pipe/showzw.pipe';
 import { ContentPipe } from './pipe/content.pipe';
+import { UserGroupComponent } from './back-stage/user-group/user-group.component';
+import { GroupUserComponent } from './back-stage/group-user/group-user.component';
+import { GroupPlanComponent } from './back-stage/group-plan/group-plan.component';
+import {GroupService} from './service/group.service';
+import {IntermediatorService} from './service/intermediator.service';
 
 const routerConfig: Routes = [
   { path: '', component: IndexComponent, children: [
@@ -35,11 +40,14 @@ const routerConfig: Routes = [
     ]},
   { path: 'show/:planId', component: ShowComponent },
   { path: 'contests', component: RecentcontestsComponent},
-  { path: 'profile', component: ProfileComponent, canActivate: [PowerGuard] }, //  PowerGuard
+  { path: 'profile', component: ProfileComponent, canActivate: [PowerGuard] },
   { path: 'adminBack', component: BackStageComponent, canActivate: [AdminUserLoginGuard]},
   { path: 'second/:planId', component: SecondPlanComponent, canActivate: [AdminUserLoginGuard]},
   { path: 'third/:zxId', component: ThirdPlanComponent, canActivate: [AdminUserLoginGuard]},
-  { path: 'back_user', component: BackUserComponent, canActivate: [AdminUserLoginGuard]}
+  { path: 'back_user', component: BackUserComponent, canActivate: [AdminUserLoginGuard]},
+  { path: 'back_user_group', component: UserGroupComponent, canActivate: [AdminUserLoginGuard]},
+  { path: 'group_user/:gid', component: GroupUserComponent, canActivate: [AdminUserLoginGuard]},
+  { path: 'group_plan/:gid', component: GroupPlanComponent, canActivate: [AdminUserLoginGuard]},
 ];
 
 @NgModule({
@@ -59,7 +67,10 @@ const routerConfig: Routes = [
     BackUserComponent,
     NullToZerroPipe,
     ShowzwPipe,
-    ContentPipe
+    ContentPipe,
+    UserGroupComponent,
+    GroupUserComponent,
+    GroupPlanComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +80,7 @@ const routerConfig: Routes = [
     NgZorroAntdModule.forRoot(),
     BrowserAnimationsModule,
   ],
-  providers: [ RecentService, PlansService, PlansViewService, UserService, PowerGuard, AdminUserLoginGuard],
+  providers: [ RecentService, PlansService, PlansViewService, UserService, PowerGuard, AdminUserLoginGuard, GroupService, IntermediatorService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -16,6 +16,17 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/contests']">近期比赛</a>
         </li>
+        <li class="nav-item" *ngIf="info">
+          <a class="nav-link" (click)="handleInfo()">统计信息</a>
+        </li>
+        <li class="nav-item" *ngIf="info">
+          <nz-select style="width: 240px;" [(ngModel)]="selectedValue" nzShowSearch  nzAllowClear nzPlaceHolder="所有">
+            <nz-option *ngFor="let op of userGroups" [nzValue]="op.id" [nzLabel]="op.name"></nz-option>
+          </nz-select>
+          <button nz-button nzType="primary" (click)="submitSelect()">
+            <i class="anticon anticon-search"></i>显示当前选择的组
+          </button>
+        </li>
       </ul>
       <ul class="navbar-nav my-2 my-lg-0">
         <li class="nav-item" *ngIf="haveUser()">

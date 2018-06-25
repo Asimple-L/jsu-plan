@@ -97,6 +97,8 @@ export class BackStageComponent implements OnInit {
     this.dataSource.subscribe();
     this.http_get();
   }
+
+  // 取消修改
   CanceEdit(key: number): void {
     this.editCache[ key ].edit = false;
     this.updateEditCache();
@@ -115,8 +117,13 @@ export class BackStageComponent implements OnInit {
   }
 
   // 跳转到用户管理
-  trunToUser(): void {
+  turnToUser(): void {
     this.router.navigateByUrl('/back_user');
+  }
+
+  // 跳转到用户组管理
+  turnToUserGroup(): void {
+    this.router.navigateByUrl('/back_user_group');
   }
 
 }

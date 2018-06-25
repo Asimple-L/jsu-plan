@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterContentChecked, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NzMessageService, NzModalService} from 'ng-zorro-antd';
 import {User, UserService} from '../service/user.service';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
-import {Person, PlansViewService} from '../service/plans-view.service';
+import {IntermediatorService} from '../service/intermediator.service';
+import {UserGroup} from '../service/group.service';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, AfterContentChecked {
 
   isVisible = false;
   isOkLoading = false;
@@ -20,6 +21,9 @@ export class NavigationComponent implements OnInit {
   user: User;
   dataSource: Observable<any>;
   flag = false;
+  userGroups: UserGroup[];
+  info = false;
+  selectedValue = '所有';
 
   constructor(
     private modalService: NzModalService,
@@ -27,10 +31,34 @@ export class NavigationComponent implements OnInit {
     private message: NzMessageService,
     private router: Router,
     private http: HttpClient,
+    private inter: IntermediatorService,
   ) {
   }
 
   ngOnInit() {
+    this.dataSource = this.http.get('/search/allgroup');
+    this.dataSource.subscribe( (data) => {
+      this.userGroups = data;
+      this.userGroups.unshift(new UserGroup('', '所有', 0));
+      this.selectedValue = '所有';
+    });
+  }
+
+  ngAfterContentChecked(): void {
+    const paths = location.pathname.split('/');
+    if ( paths == null || paths.length < 1 ) {
+      return ;
+    }
+    if ( paths[1] == 'show' ) {
+      this.info = true;
+    } else {
+      this.info = false;
+    }
+  }
+
+  // 发送统计信息
+  handleInfo(): void {
+    this.inter.emitChange(true);
   }
 
   /*
@@ -110,6 +138,10 @@ export class NavigationComponent implements OnInit {
     this.userService.setUser(null);
     // 无用户登录，直接跳转到首页
     this.router.navigateByUrl('/');
+  }
+
+  submitSelect(): void {
+    this.inter.selectChange(this.selectedValue);
   }
 
 }
